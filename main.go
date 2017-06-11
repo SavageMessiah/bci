@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -67,6 +68,16 @@ func Copy(src, dst string) {
 	}
 }
 
+var badChars = []string{"/", "\\", "<", ">", ":", ";", "\"", "|", "?", "*", "."}
+
+func CleanTrack(track string) string {
+	cleaned := track
+	for _, badChar := range badChars {
+		cleaned = strings.Replace(cleaned, badChar, "", -1)
+	}
+	return cleaned
+}
+
 func CopyAlbum(root string, album Album, edit EditAlbum) {
 	dir := filepath.Join(root, edit.Artist, edit.Album)
 	log.WithField("dir", dir).Print("Creating destination directory")
@@ -75,7 +86,8 @@ func CopyAlbum(root string, album Album, edit EditAlbum) {
 		log.WithField("dir", dir).WithError(err).Fatal("Error creating directory")
 	}
 	for i, track := range album.Tracks {
-		filename := fmt.Sprintf("%02d - %s.mp3", i+1, edit.Tracks[i])
+		cleanTrack := CleanTrack(edit.Tracks[i])
+		filename := fmt.Sprintf("%02d - %s.mp3", i+1, cleanTrack)
 		dst := filepath.Join(dir, filename)
 		Copy(track, dst)
 	}
