@@ -45,7 +45,7 @@ func ParseEditAlbum(a Album) EditAlbum {
 
 	tracks := []string{}
 	for _, track := range a.Tracks {
-		log.WithField("file", track).Print("\tParsing tags for track info")
+		log.WithField("file", track).Debug("\tParsing tags for track info")
 		tag, err := id3.Open(track)
 		if err != nil {
 			log.WithField("file", track).WithError(err).Fatal("Error parsing tags")
