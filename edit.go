@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/BurntSushi/toml"
-	"github.com/mikkyang/id3-go"
-	"github.com/mikkyang/id3-go/v2"
+	"github.com/jcs/id3-go"
+	"github.com/jcs/id3-go/v2"
 	log "github.com/sirupsen/logrus"
 )
 
